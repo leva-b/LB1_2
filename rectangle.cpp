@@ -4,7 +4,8 @@ Rectangle::Rectangle(const QPoint& topLeft, const QPoint& bottomRight, const QCo
     : Polygon({topLeft, QPoint(bottomRight.x(), topLeft.y()), bottomRight, QPoint(topLeft.x(), bottomRight.y())}, color) {}
 
 double Rectangle::area() const {
-    double result = std::abs((vertices[1].x() - vertices[0].x())* (vertices[2].y() - vertices[1].y()));
+    double p = this->perimeter();
+    double result = std::abs((vertices[1].x() - vertices[0].x())*(vertices[2].y() - vertices[1].y()));
     return result;
 }
 

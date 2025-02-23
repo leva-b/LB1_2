@@ -13,6 +13,8 @@
 #include "rhomb.h"
 #include "square.h"
 #include "circle.h"
+#include "ellipse.h"
+#include "stars.h"
 
 Canvas::Canvas(QWidget *parent)
     : QWidget(parent), drawing(false), color(Qt::white) {
@@ -24,6 +26,10 @@ Canvas::Canvas(QWidget *parent)
     shapeComboBox->addItem("Шестиугольник");
     shapeComboBox->addItem("Ромб");
     shapeComboBox->addItem("Квадрат");
+    shapeComboBox->addItem("Элипс");
+    shapeComboBox->addItem("Восьмиконечная звезда");
+    shapeComboBox->addItem("Пятиконечная звезда");
+    shapeComboBox->addItem("Шестиконечная звезда");
 
     QPushButton *colorButton = new QPushButton("Выбрать цвет", this);
     connect(colorButton, &QPushButton::clicked, this, &Canvas::chooseColor);
@@ -147,8 +153,16 @@ void Canvas::mouseReleaseEvent(QMouseEvent* event) {
             shape = new Rhomb(startPoint, endPoint, color);
         }else if(selectedShape == "Квадрат"){
             shape = new Square(startPoint, endPoint, color);
-        } else if (selectedShape == "Круг") {
+        }else if (selectedShape == "Круг") {
             shape = new Circle(startPoint, endPoint, color);
+        }else if (selectedShape == "Элипс"){
+            shape = new Ellipse(startPoint, endPoint, color);
+        }else if(selectedShape == "Восьмиконечная звезда"){
+            shape = new Stars(startPoint, endPoint, 8, color);
+        }else if(selectedShape == "Пятиконечная звезда"){
+            shape = new Stars(startPoint, endPoint, 5, color);
+        }else if(selectedShape == "Шестиконечная звезда"){
+            shape = new Stars(startPoint, endPoint, 6, color);
         }
 
 
@@ -185,19 +199,27 @@ void Canvas::paintEvent(QPaintEvent* event) {
         {
             Hexagon tempHexagon(startPoint, endPoint, color);
             tempHexagon.draw(painter);
-        }else if(selectedShape == "Ромб")
-        {
+        }else if(selectedShape == "Ромб"){
             Rhomb tempRhomb(startPoint, endPoint, color);
             tempRhomb.draw(painter);
         }else if(selectedShape == "Квадрат"){
             Square tempSquare(startPoint, endPoint, color);
             tempSquare.draw(painter);
-        }
-        else if (selectedShape == "Круг") {
+        }else if (selectedShape == "Круг") {
             Circle tempCircle(startPoint, endPoint, color);
             tempCircle.draw(painter);
+        }else if (selectedShape == "Элипс") {
+            Ellipse tempEllipse(startPoint, endPoint, color);
+            tempEllipse.draw(painter);
+        }else if(selectedShape == "Восьмиконечная звезда"){
+            Stars tempEightPStar(startPoint, endPoint, 8, color);
+            tempEightPStar.draw(painter);
+        }else if(selectedShape == "Пятиконечная звезда"){
+            Stars tempEightPStar(startPoint, endPoint, 5, color);
+            tempEightPStar.draw(painter);
+        }else if(selectedShape == "Шестиконечная звезда"){
+            Stars tempEightPStar(startPoint, endPoint, 6, color);
+            tempEightPStar.draw(painter);
         }
-
-
     }
 }

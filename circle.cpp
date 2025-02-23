@@ -1,5 +1,6 @@
 #include "circle.h"
 #include <QPainter>
+
 Circle::Circle(QPoint& start, QPoint& end, QColor& color) {
     radius = std::hypot(start.x() - end.x(), start.y() - end.y());
     this->color = color;
@@ -20,5 +21,4 @@ void Circle::draw(QPainter& painter){
 }
 
 void Circle::move(const QPoint& offset) {}
-void Circle::rotate(double angle, const QPoint& pivot){}
 void Circle::scale(double factor, const QPoint& center){}

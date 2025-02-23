@@ -11,6 +11,7 @@ CONFIG += c++17
 SOURCES += \
     canvas.cpp \
     circle.cpp \
+    ellipse.cpp \
     hexagon.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -19,11 +20,13 @@ SOURCES += \
     rhomb.cpp \
     shape.cpp \
     square.cpp \
+    stars.cpp \
     triangle.cpp
 
 HEADERS += \
     canvas.h \
     circle.h \
+    ellipse.h \
     hexagon.h \
     mainwindow.h \
     polygon.h \
@@ -31,6 +34,7 @@ HEADERS += \
     rhomb.h \
     shap.h \
     square.h \
+    stars.h \
     triangle.h
 
 FORMS += \

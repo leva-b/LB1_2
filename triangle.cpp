@@ -1,4 +1,4 @@
-#include "triangle.h"
+    #include "triangle.h"
 #include <QPainter>
 #include <QPolygon>
 
@@ -7,7 +7,11 @@ Triangle::Triangle(const QPoint& point1, const QPoint& point2, const QPoint& poi
 
 
 double Triangle::area() const {
-    return 1;
+    double p = this->perimeter();
+    double result = sqrt(p*(p - std::hypot(vertices[0].x() - vertices[1].x(),vertices[0].x() - vertices[1].x()))*
+                         (p - std::hypot(vertices[1].x() - vertices[2].x(),vertices[0].x() - vertices[2].x()))*
+                         (p - std::hypot(vertices[2].x() - vertices[0].x(),vertices[2].x() - vertices[0].x())));
+    return result;
 }
 
 void Triangle::draw(QPainter& painter) {

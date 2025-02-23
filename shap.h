@@ -6,8 +6,7 @@ class Shap: public QWidget
 {
     Q_OBJECT
 protected:
-    void setColor(const QColor& color);
-    QColor getColor() const;
+    Shap(const QPoint& center);
     Shap() = default;
     Shap(const QColor& color) {
         this->color = color;
@@ -30,6 +29,8 @@ protected:
     virtual void rotate(double angle, const QPoint& pivot) = 0;
     virtual void scale(double factor, const QPoint& center) = 0;
 
+    void setColor(const QColor& color);
+    QColor getColor() const;
 
 public:
     virtual void draw(QPainter& painter) = 0;

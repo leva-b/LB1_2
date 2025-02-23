@@ -1,17 +1,19 @@
-#ifndef CIRCLE_H
-#define CIRCLE_H
+#ifndef ELLIPSE_H
+#define ELLIPSE_H
 #include <shap.h>
-class Circle: public Shap
+
+class Ellipse: public Shap
 {
-    double radius;
+    int R1, R2;
 public:
     void draw(QPainter& painter) override;
-    Circle(QPoint& start, QPoint& end, QColor& color);
+    Ellipse(QPoint& start, QPoint& end, QColor& color);
+protected:
     double area() const override;
     double perimeter() const override;
     void move(const QPoint& offset) override;
-    void rotate(double angle, const QPoint& pivot) override {Q_UNUSED(angle) Q_UNUSED(pivot)};
+    void rotate(double angle, const QPoint& pivot) override;
     void scale(double factor, const QPoint& center) override;
 };
 
-#endif // CIRCLE_H
+#endif // ELLIPSE_H
