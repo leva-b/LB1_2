@@ -7,7 +7,7 @@ class Triangle: public Polygon
 {
 public:
     explicit Triangle(const QPoint& point1, const QPoint& point2, const QPoint& point3, const QColor& color = Qt::blue);
-     void draw(QPainter& painter) override;
+    void draw(QPainter& painter) override;
 private:
     double area() const override;
 

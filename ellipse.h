@@ -5,6 +5,8 @@
 class Ellipse: public Shap
 {
     int R1, R2;
+
+    bool contains(const QPoint &point) const override;
 public:
     void draw(QPainter& painter) override;
     Ellipse(QPoint& start, QPoint& end, QColor& color);

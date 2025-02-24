@@ -17,7 +17,7 @@
 #include "stars.h"
 
 Canvas::Canvas(QWidget *parent)
-    : QWidget(parent), drawing(false), color(Qt::white) {
+    : QWidget(parent), drawing(false), color(Qt::white), selectedShape(nullptr) {
 
     shapeComboBox = new QComboBox(this);
     shapeComboBox->addItem("Прямоугольник");
@@ -26,7 +26,7 @@ Canvas::Canvas(QWidget *parent)
     shapeComboBox->addItem("Шестиугольник");
     shapeComboBox->addItem("Ромб");
     shapeComboBox->addItem("Квадрат");
-    shapeComboBox->addItem("Элипс");
+    shapeComboBox->addItem("Эллипс");
     shapeComboBox->addItem("Восьмиконечная звезда");
     shapeComboBox->addItem("Пятиконечная звезда");
     shapeComboBox->addItem("Шестиконечная звезда");
@@ -106,6 +106,26 @@ void Canvas::clear() {
 
 void Canvas::mousePressEvent(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
+        for (auto &shape : shapes) {
+            if (shape->contains(event->pos())) {
+                qDebug() << "Shape selected:" << typeid(*shape).name();
+                if (selectedShape) {
+                    selectedShape->changeSelection();
+                }
+                endPoint = event->pos();
+                selectedShape = shape;
+                shape->changeSelection();
+                update();
+                return;
+            }
+        }
+
+
+    if (selectedShape) {
+        selectedShape->changeSelection();
+        selectedShape = nullptr;
+        update();
+    }
         drawing = true;
         startPoint = event->pos();
         endPoint = event->pos();
@@ -130,6 +150,17 @@ void Canvas::mouseMoveEvent(QMouseEvent *event) {
         }
         endPoint = event->pos();
         update();
+    }else if(selectedShape){
+        qDebug() << "move";
+        QPoint different = event->pos() - endPoint;
+
+        // Перемещаем выбранную фигуру
+        selectedShape->move(different);
+
+        endPoint = event->pos();
+
+        update();
+
     }
 }
 
@@ -138,7 +169,6 @@ void Canvas::mouseReleaseEvent(QMouseEvent* event) {
         drawing = false;
         endPoint = event->pos();
 
-        // Создаем фигуру в зависимости от выбора в выпадающем списке
         QString selectedShape = shapeComboBox->currentText();
         Shap* shape = nullptr;
 
@@ -155,7 +185,7 @@ void Canvas::mouseReleaseEvent(QMouseEvent* event) {
             shape = new Square(startPoint, endPoint, color);
         }else if (selectedShape == "Круг") {
             shape = new Circle(startPoint, endPoint, color);
-        }else if (selectedShape == "Элипс"){
+        }else if (selectedShape == "Эллипс"){
             shape = new Ellipse(startPoint, endPoint, color);
         }else if(selectedShape == "Восьмиконечная звезда"){
             shape = new Stars(startPoint, endPoint, 8, color);
@@ -167,7 +197,7 @@ void Canvas::mouseReleaseEvent(QMouseEvent* event) {
 
 
         if (shape) {
-            shapes.append(shape); // Добавляем фигуру в список
+            shapes.append(shape);
         }
 
         update();
@@ -184,6 +214,12 @@ void Canvas::paintEvent(QPaintEvent* event) {
     for (const auto& shape : shapes) {
         shape->draw(painter);
     }
+    if (selectedShape) {
+        QPoint center = selectedShape->center();
+        painter.setBrush(Qt::green); // Зеленый цвет для центра масс
+        painter.setPen(Qt::black);   // Черный контур
+        painter.drawEllipse(center, 4, 4); // Рисуем круг радиусом 5 пикселей
+    }
 
     // рисуем текущую фигуру(процесс рисования)
     if (drawing) {
@@ -194,9 +230,7 @@ void Canvas::paintEvent(QPaintEvent* event) {
         }else if (selectedShape == "Треугольник") {
             Triangle tempTriangle(startPoint, endPoint, QPoint(startPoint.x() + startPoint.x() - endPoint.x(),endPoint.y()), color);
             tempTriangle.draw(painter);
-        }
-        else if(selectedShape == "Шестиугольник")
-        {
+        }else if(selectedShape == "Шестиугольник"){
             Hexagon tempHexagon(startPoint, endPoint, color);
             tempHexagon.draw(painter);
         }else if(selectedShape == "Ромб"){
@@ -208,7 +242,7 @@ void Canvas::paintEvent(QPaintEvent* event) {
         }else if (selectedShape == "Круг") {
             Circle tempCircle(startPoint, endPoint, color);
             tempCircle.draw(painter);
-        }else if (selectedShape == "Элипс") {
+        }else if (selectedShape == "Эллипс") {
             Ellipse tempEllipse(startPoint, endPoint, color);
             tempEllipse.draw(painter);
         }else if(selectedShape == "Восьмиконечная звезда"){
@@ -218,8 +252,8 @@ void Canvas::paintEvent(QPaintEvent* event) {
             Stars tempEightPStar(startPoint, endPoint, 5, color);
             tempEightPStar.draw(painter);
         }else if(selectedShape == "Шестиконечная звезда"){
-            Stars tempEightPStar(startPoint, endPoint, 6, color);
-            tempEightPStar.draw(painter);
+            Stars tempSixPStar(startPoint, endPoint, 6, color);
+            tempSixPStar.draw(painter);
         }
     }
 }

@@ -4,6 +4,7 @@
 class Circle: public Shap
 {
     double radius;
+    bool contains(const QPoint &point) const override;
 public:
     void draw(QPainter& painter) override;
     Circle(QPoint& start, QPoint& end, QColor& color);

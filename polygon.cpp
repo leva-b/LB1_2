@@ -1,8 +1,11 @@
 #include "polygon.h"
 #include <QWidget>
+#include <QPoint>
 
 Polygon::Polygon(const QVector<QPoint>& vertices, const QColor& color)
-    : Shap(color), vertices(vertices) {}
+    : Shap(color), vertices(vertices) {
+    this->originalColor = color;
+}
 
 double Polygon::perimeter() const {
     double perimeter = 0;
@@ -39,4 +42,16 @@ void Polygon::scale(double factor, const QPoint& center) {
         QPoint relative = vertex - center;
         vertex = center + relative * factor;
     }
+}
+
+
+bool Polygon::contains(const QPoint &point) const{
+    QPolygon polygon(vertices);
+    qDebug() << "point:" << point << "rectangle:";
+
+    // if(polygon.contains(point))
+    //     return true;
+    // else
+    //     return false;
+    return polygon.containsPoint(point, Qt::OddEvenFill);
 }

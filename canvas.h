@@ -20,12 +20,12 @@ private:
     QPoint startPoint;
     QPoint endPoint;
     QColor color;
-
+    Shap* selectedShape;
     QComboBox *shapeComboBox;
     QList<Shap*> shapes;
+
 private slots:
     void chooseColor();
-
 };
 
 #endif // CANVAS_H

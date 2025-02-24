@@ -1,7 +1,9 @@
 #include "rhomb.h"
 #include <QPainter>
 Rhomb::Rhomb(const QPoint& start, const QPoint& end, const QColor& color):
-    Polygon(calculateVertices(start, end), color){}
+    Polygon(calculateVertices(start, end), color){
+    position = QPoint(start.x(), end.y());
+}
 
 void Rhomb::draw(QPainter& painter)
 {
@@ -14,7 +16,9 @@ void Rhomb::draw(QPainter& painter)
 }
 
 double Rhomb::area() const{
-    return 1;
+    double result = std::hypot(vertices[0].x() - vertices[2].x(), vertices[0].y() - vertices[2].y())
+                   *std::hypot(vertices[1].x() - vertices[3].x(), vertices[1].y() - vertices[3].y())/2;
+    return result;
 }
 
 QVector<QPoint> Rhomb::calculateVertices(const QPoint& start, const QPoint& end){

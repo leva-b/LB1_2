@@ -1,7 +1,8 @@
 #include "rectangle.h"
 
 Rectangle::Rectangle(const QPoint& topLeft, const QPoint& bottomRight, const QColor& color)
-    : Polygon({topLeft, QPoint(bottomRight.x(), topLeft.y()), bottomRight, QPoint(topLeft.x(), bottomRight.y())}, color) {}
+    : Polygon({topLeft, QPoint(bottomRight.x(), topLeft.y()), bottomRight, QPoint(topLeft.x(), bottomRight.y())}, color) {
+    position = QPoint((topLeft.x()+bottomRight.x())/2,(topLeft.y()+bottomRight.y())/2);}
 
 double Rectangle::area() const {
     double p = this->perimeter();
@@ -12,5 +13,6 @@ double Rectangle::area() const {
 void Rectangle::draw(QPainter& painter) {
     painter.setPen(QPen(color, 3));
     painter.setBrush(Qt::NoBrush);
-    painter.drawRect(QRect(vertices[0], vertices[2]));
+    QPolygon polygon(vertices);
+    painter.drawPolygon(polygon);
 }

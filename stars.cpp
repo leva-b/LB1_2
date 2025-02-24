@@ -34,6 +34,7 @@ QVector<QPoint> Stars::calculateVertices(const QPoint& start, const QPoint& end,
 
 void Stars::draw(QPainter& painter){
     QPolygon polygon(vertices);
+    painter.setPen(QPen(color,3));
     painter.drawPolygon(polygon);
 }
 

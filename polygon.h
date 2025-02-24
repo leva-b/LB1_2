@@ -1,13 +1,14 @@
-    #ifndef POLYGON_H
+#ifndef POLYGON_H
 #define POLYGON_H
 #include "shap.h"
 
 class Polygon: public Shap
 {
     Q_OBJECT
+
+    bool contains(const QPoint &point) const override;
 public:
     Polygon(const QVector<QPoint>& vertices, const QColor& color = Qt::blue);
-
 protected:
     QVector<QPoint> vertices;
     void move(const QPoint& offset) override;
