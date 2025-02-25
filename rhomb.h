@@ -10,6 +10,7 @@ public:
 private:
     double area() const override;
     QVector<QPoint> calculateVertices(const QPoint& start, const QPoint& end);
+    void scale(double factor, const QPoint& center)override;
 };
 
 #endif // RHOMB_H

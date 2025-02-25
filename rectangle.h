@@ -10,7 +10,7 @@ class Rectangle : public Polygon {
 public:
     Rectangle(const QPoint& topLeft, const QPoint& bottomRight, const QColor& color = Qt::blue);
     void draw(QPainter& painter) override;
-    //void scale(double factor, const QPoint& center) override;
+    void scale(double factor, const QPoint& center) override;
 private:
     double area() const override;
 

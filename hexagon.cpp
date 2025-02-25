@@ -1,5 +1,6 @@
 #include "hexagon.h"
 #include <QPolygon>
+
 Hexagon::Hexagon(const QPoint& start, const QPoint& end, const QColor& color): Polygon(calculateVertices(start,end), color)
 {
     position = start;
