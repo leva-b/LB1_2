@@ -12,6 +12,7 @@ public:
     double area() const override;
 private:
     QVector<QPoint> calculateVertices(const QPoint& start, const QPoint& end);
+    void scale(double factor, const QPoint& center) override;
 };
 
 #endif // HEXAGON_H

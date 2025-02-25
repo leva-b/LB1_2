@@ -3,6 +3,7 @@
 #include <QWidget>
 #include <QComboBox>
 #include "shap.h"
+#include <QGestureEvent>
 class Canvas: public QWidget
 {
 protected:
@@ -16,6 +17,7 @@ public:
     void setColor(const QColor &newColor);
     void clear();
 private:
+
     bool drawing;
     QPoint startPoint;
     QPoint endPoint;
@@ -24,6 +26,10 @@ private:
     QComboBox *shapeComboBox;
     QList<Shap*> shapes;
 
+    QLineEdit* CMx;
+    QLineEdit* CMy;
+
+    void updateShapePositionFromText();
 private slots:
     void chooseColor();
 };

@@ -7,6 +7,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QList>
+#include <QGestureEvent>
 #include "rectangle.h"
 #include "triangle.h"
 #include "hexagon.h"
@@ -18,7 +19,6 @@
 
 Canvas::Canvas(QWidget *parent)
     : QWidget(parent), drawing(false), color(Qt::white), selectedShape(nullptr) {
-
     shapeComboBox = new QComboBox(this);
     shapeComboBox->addItem("Прямоугольник");
     shapeComboBox->addItem("Треугольник");
@@ -74,6 +74,16 @@ Canvas::Canvas(QWidget *parent)
                                "QPushButton:pressed {"
                                "background-color: #c00707;"
                                "}");
+    // CMx = new QLineEdit(this);
+    // CMx->setPlaceholderText("X");
+    // CMx->hide(); // Скрываем по умолчанию
+
+    // CMy = new QLineEdit(this);
+    // CMy->setPlaceholderText("Y");
+    // CMy->hide(); // Скрываем по умолчанию
+
+    // connect(CMx, &QLineEdit::textChanged, this, &Canvas::updateShapePositionFromText);
+    // connect(CMy, &QLineEdit::textChanged, this, &Canvas::updateShapePositionFromText);
 
     QHBoxLayout *buttonLayout = new QHBoxLayout();
     buttonLayout->addStretch();
@@ -108,7 +118,7 @@ void Canvas::mousePressEvent(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
         for (auto &shape : shapes) {
             if (shape->contains(event->pos())) {
-                qDebug() << "Shape selected:" << typeid(*shape).name();
+                qDebug() << "Shape";
                 if (selectedShape) {
                     selectedShape->changeSelection();
                 }
@@ -132,16 +142,16 @@ void Canvas::mousePressEvent(QMouseEvent *event) {
     }
 }
 
-void Canvas::mouseMoveEvent(QMouseEvent *event) {
+void Canvas::mouseMoveEvent(QMouseEvent* event) {
     if (drawing) {
         if (!rect().contains(event->pos())) {
             endPoint = event->pos();
             QString selectedShape = shapeComboBox->currentText();
             if (selectedShape == "Прямоугольник") {
                 shapes.append(new Rectangle(startPoint, endPoint, color));
-            }else if(selectedShape == "Треугольник") {
-                shapes.append(new Triangle(startPoint, endPoint, QPoint(startPoint.x() - (endPoint.x() - startPoint.x()),endPoint.y()), color));
-            }else if(selectedShape == "Шестиугольник"){
+            } else if (selectedShape == "Треугольник") {
+                shapes.append(new Triangle(startPoint, endPoint, QPoint(startPoint.x() - (endPoint.x() - startPoint.x()), endPoint.y()), color));
+            } else if (selectedShape == "Шестиугольник") {
                 shapes.append(new Hexagon(startPoint, endPoint, color));
             }
             drawing = false;
@@ -150,17 +160,19 @@ void Canvas::mouseMoveEvent(QMouseEvent *event) {
         }
         endPoint = event->pos();
         update();
-    }else if(selectedShape){
-        qDebug() << "move";
-        QPoint different = event->pos() - endPoint;
-
-        // Перемещаем выбранную фигуру
-        selectedShape->move(different);
-
+    } else if (selectedShape) {
+        if (event->modifiers() & Qt::ControlModifier) {
+            // Если зажата клавиша Ctrl, изменяем масштаб
+            QPoint delta = event->pos() - endPoint;
+            double scaleFactor = 1.0 + (-delta.y()) * 0.01; // Масштабируем на основе движения по оси Y
+            selectedShape->scale(scaleFactor, selectedShape->center());
+        } else {
+            // Если Ctrl не зажат, перемещаем фигуру
+            QPoint different = event->pos() - endPoint;
+            selectedShape->move(different);
+        }
         endPoint = event->pos();
-
         update();
-
     }
 }
 
@@ -176,8 +188,7 @@ void Canvas::mouseReleaseEvent(QMouseEvent* event) {
             shape = new Rectangle(startPoint, endPoint, color);
         }else if (selectedShape == "Треугольник") {
             shape = new Triangle(startPoint, endPoint, QPoint(startPoint.x() - (endPoint.x() - startPoint.x()),endPoint.y()), color);
-        }else if(selectedShape == "Шестиугольник")
-        {
+        }else if(selectedShape == "Шестиугольник"){
             shape = new Hexagon(startPoint, endPoint, color);
         }else if(selectedShape == "Ромб"){
             shape = new Rhomb(startPoint, endPoint, color);
@@ -214,11 +225,33 @@ void Canvas::paintEvent(QPaintEvent* event) {
     for (const auto& shape : shapes) {
         shape->draw(painter);
     }
+    int rectHeight = 50;
+    QRect bottomRect(0, height() - rectHeight, width(), rectHeight);
+    // painter.setBrush(QColor(31, 30, 30));
+    painter.setPen(QPen(QColor(31, 30, 30),0));
+    painter.drawRect(bottomRect);
+
     if (selectedShape) {
         QPoint center = selectedShape->center();
-        painter.setBrush(Qt::green); // Зеленый цвет для центра масс
-        painter.setPen(Qt::black);   // Черный контур
-        painter.drawEllipse(center, 4, 4); // Рисуем круг радиусом 5 пикселей
+        painter.setBrush(Qt::green);
+        painter.setPen(Qt::black);
+        painter.drawEllipse(center, 4, 4);
+
+        selectedShape->showInformation(painter, height());
+
+    //     // Показываем QLineEdit и обновляем их значения
+    //     CMx->setText(QString::number(center.x()));
+    //     CMy->setText(QString::number(center.y()));
+
+    //     CMx->setGeometry(120, height() - 50, 100, 20);
+    //     CMy->setGeometry(120, height() - 22, 100, 20);
+
+    //     CMx->show();
+    //     CMy->show();
+    // } else {
+    //     // Скрываем QLineEdit, если нет выбранной фигуры
+    //     CMx->hide();
+    //     CMy->hide();
     }
 
     // рисуем текущую фигуру(процесс рисования)
@@ -257,3 +290,17 @@ void Canvas::paintEvent(QPaintEvent* event) {
         }
     }
 }
+
+void Canvas::updateShapePositionFromText() {
+    if (selectedShape) {
+        bool okX, okY;
+        int x = CMx->text().toInt(&okX);
+        int y = CMy->text().toInt(&okY);
+
+        if (okX && okY) {
+            selectedShape->updatePosition(QPoint(x, y));
+            update(); // Перерисовываем холст
+        }
+    }
+}
+

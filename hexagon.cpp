@@ -16,7 +16,7 @@ QVector<QPoint> Hexagon::calculateVertices(const QPoint& start, const QPoint& en
     double radius = QLineF(start, end).length();
 
     for (int i = 0; i < 6; ++i) {
-        double angle = 2 * M_PI * i / 6; // Угол для каждой вершины
+        double angle = 2 * M_PI * i / 6; // угол для вершины
         int x = center.x() + radius * cos(angle);
         int y = center.y() + radius * sin(angle);
         vertices.push_back(QPoint(x, y));
@@ -27,11 +27,24 @@ QVector<QPoint> Hexagon::calculateVertices(const QPoint& start, const QPoint& en
 
 void Hexagon::draw(QPainter& painter) {
     painter.setPen(QPen(color, 3));
-    QPolygon polygon(vertices);
+    QPolygon polygon;
+    for(const QPoint& vertice: vertices){
+        polygon << (vertice - position)*scaleFactor + position;
+    }
     painter.drawPolygon(polygon);
 }
 
 double Hexagon::area() const{
-    double result;
-    return result;
+    double result = 0;
+    for(int i = 0; i < vertices.size(); i++){
+        result += TriangleArea(position, vertices[i], vertices[(i+1)%vertices.size()]);
+    }
+    return result*scaleFactor*scaleFactor;
+}
+
+void Hexagon::scale(double factor, const QPoint& center){
+    Q_UNUSED(center);
+    if(scaleFactor * factor > 10)scaleFactor = 10;
+    else if(scaleFactor * factor < 0.1)scaleFactor = 0.1;
+    else scaleFactor *= factor;
 }

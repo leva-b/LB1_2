@@ -16,6 +16,7 @@ protected:
     void rotate(double angle, const QPoint& center) override;
     void scale(double factor, const QPoint& center) override;
     void draw(QPainter& painter) override = 0;
+    double TriangleArea(const QPoint& p1, const QPoint& p2,const QPoint& p3)const;
 };
 
 #endif // POLYGON_H

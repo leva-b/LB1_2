@@ -13,7 +13,6 @@ SOURCES += \
     circle.cpp \
     ellipse.cpp \
     hexagon.cpp \
-    infowidget.cpp \
     main.cpp \
     mainwindow.cpp \
     polygon.cpp \
@@ -29,7 +28,6 @@ HEADERS += \
     circle.h \
     ellipse.h \
     hexagon.h \
-    infowidget.h \
     mainwindow.h \
     polygon.h \
     rectangle.h \

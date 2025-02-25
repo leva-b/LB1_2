@@ -11,9 +11,10 @@ void Rhomb::draw(QPainter& painter)
     painter.setBrush(Qt::NoBrush);
     QPolygon polygon;
     for(int i = 0; i < 4; i++)
-        polygon << vertices[i];
+        polygon << (vertices[i]- position)*scaleFactor + position;
     painter.drawPolygon(polygon);
 }
+
 
 double Rhomb::area() const{
     double result = std::hypot(vertices[0].x() - vertices[2].x(), vertices[0].y() - vertices[2].y())
