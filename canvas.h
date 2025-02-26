@@ -17,7 +17,7 @@ public:
     void setColor(const QColor &newColor);
     void clear();
 private:
-
+    bool isRotating = false;
     bool drawing;
     QPoint startPoint;
     QPoint endPoint;

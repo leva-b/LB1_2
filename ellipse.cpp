@@ -45,3 +45,7 @@ bool Ellipse::contains(const QPoint &point) const {
 
     return path.contains(point);
 }
+
+void Ellipse::rotate(double angle){
+    rotation += angle;
+}

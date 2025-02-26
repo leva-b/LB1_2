@@ -1,6 +1,7 @@
 #include "polygon.h"
 #include <QWidget>
-#include <QPoint>
+#include <QPainter>
+
 
 Polygon::Polygon(const QVector<QPoint>& vertices, const QColor& color)
     : Shap(color), vertices(vertices) {
@@ -41,14 +42,21 @@ void Polygon::scale(double factor, const QPoint& center) {
 }
 
 
-bool Polygon::contains(const QPoint &point) const{
+bool Polygon::contains(const QPoint &point) const {
     QPolygon polygon;
-    for(const QPoint& vertice: vertices){
-        polygon << (vertice-position)*scaleFactor + position;
+    for (const QPoint& vertice: vertices) {
+        QPoint scaledVertice = (vertice - position) * scaleFactor + position;
+        polygon << scaledVertice;
     }
-    qDebug() << "point:" << point << "rectangle:";
 
-    return polygon.containsPoint(point, Qt::OddEvenFill);
+    QTransform transform;
+    transform.translate(center().x(), center().y());
+    transform.rotate(rotation);
+    transform.translate(-center().x(), -center().y());
+
+    QPolygon transformedPolygon = transform.map(polygon);
+
+    return transformedPolygon.containsPoint(point, Qt::OddEvenFill);
 }
 
 

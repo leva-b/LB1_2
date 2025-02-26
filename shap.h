@@ -4,6 +4,7 @@
 #include <QLabel>
 #include <QPainter>
 #include <QLineEdit>
+#include <QDebug>
 class Shap: public QWidget
 {
     Q_OBJECT
@@ -48,12 +49,12 @@ public:
     }
 
     void updatePosition(const QPoint& newPosition) {
-        position = newPosition; // Обновляем позицию фигуры
-        update(); // Перерисовываем фигуру
+        position = newPosition;
+        update();
     }
 
     void showInformation(QPainter& painter, int height) {
-        // Отображение периметра и площади
+
         painter.setPen(Qt::red);
         QRect rect(20, height - 43, 100, 20);
         painter.drawText(rect, Qt::AlignLeft, QString("P: ") + QString::number(this->perimeter(), 'f', 2));
@@ -61,6 +62,9 @@ public:
         QRect rect2(20, height - 22, 100, 20);
         painter.drawText(rect2, Qt::AlignLeft, QString("S: ") + QString::number(this->area(), 'f', 2));
 
+        QRect rect3(120, height - 22, 100, 20);
+        painter.drawText(rect3, Qt::AlignLeft, QString("Угол: ") + QString::number(-this->rotation, 'f', 2));
+        qDebug() << "Rotate: " << this->rotation;
     }
     //virtual void showMoreInformation() override = 0;
 
@@ -94,7 +98,14 @@ public:
     virtual bool contains(const QPoint &point) const = 0;
 
     virtual void draw(QPainter& painter) = 0;
-
+    void drawShape(QPainter& painter){
+        painter.save();
+        painter.translate(position); // Перемещаем начало координат в центр фигуры
+        painter.rotate(rotation);
+        painter.translate(-position);
+        this->draw(painter);
+        painter.restore();
+    }
 
 };
 

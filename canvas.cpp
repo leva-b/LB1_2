@@ -168,9 +168,8 @@
             }else if(event->modifiers() & Qt::ShiftModifier){
                 double x = event->pos().x() - endPoint.x();
                 double y = event->pos().y() - endPoint.y();
-                double angle = qAtan2(y, x); // угол в градусах
+                double angle = qAtan2(y, x);
                 selectedShape->rotate(angle);
-                endPoint = event->pos();
             } else {
                 QPoint different = event->pos() - endPoint;
                 selectedShape->move(different);
@@ -227,7 +226,7 @@
 
         // Рисуем
         for (const auto& shape : shapes) {
-            shape->draw(painter);
+            shape->drawShape(painter);
         }
         int rectHeight = 50;
         QRect bottomRect(0, height() - rectHeight, width(), rectHeight);
@@ -263,34 +262,34 @@
             QString selectedShape = shapeComboBox->currentText();
             if (selectedShape == "Прямоугольник") {
                 Rectangle tempRect(startPoint, endPoint, color);
-                tempRect.draw(painter);
+                tempRect.drawShape(painter);
             }else if (selectedShape == "Треугольник") {
                 Triangle tempTriangle(startPoint, endPoint, QPoint(startPoint.x() + startPoint.x() - endPoint.x(),endPoint.y()), color);
-                tempTriangle.draw(painter);
+                tempTriangle.drawShape(painter);
             }else if(selectedShape == "Шестиугольник"){
                 Hexagon tempHexagon(startPoint, endPoint, color);
-                tempHexagon.draw(painter);
+                tempHexagon.drawShape(painter);
             }else if(selectedShape == "Ромб"){
                 Rhomb tempRhomb(startPoint, endPoint, color);
-                tempRhomb.draw(painter);
+                tempRhomb.drawShape(painter);
             }else if(selectedShape == "Квадрат"){
                 Square tempSquare(startPoint, endPoint, color);
-                tempSquare.draw(painter);
+                tempSquare.drawShape(painter);
             }else if (selectedShape == "Круг") {
                 Circle tempCircle(startPoint, endPoint, color);
-                tempCircle.draw(painter);
+                tempCircle.drawShape(painter);
             }else if (selectedShape == "Эллипс") {
                 Ellipse tempEllipse(startPoint, endPoint, color);
-                tempEllipse.draw(painter);
+                tempEllipse.drawShape(painter);
             }else if(selectedShape == "Восьмиконечная звезда"){
                 Stars tempEightPStar(startPoint, endPoint, 8, color);
-                tempEightPStar.draw(painter);
+                tempEightPStar.drawShape(painter);
             }else if(selectedShape == "Пятиконечная звезда"){
                 Stars tempEightPStar(startPoint, endPoint, 5, color);
-                tempEightPStar.draw(painter);
+                tempEightPStar.drawShape(painter);
             }else if(selectedShape == "Шестиконечная звезда"){
                 Stars tempSixPStar(startPoint, endPoint, 6, color);
-                tempSixPStar.draw(painter);
+                tempSixPStar.drawShape(painter);
             }
         }
     }
@@ -303,7 +302,7 @@
 
             if (okX && okY) {
                 selectedShape->updatePosition(QPoint(x, y));
-                update(); // Перерисовываем холст
+                update();
             }
         }
     }
