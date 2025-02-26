@@ -5,15 +5,22 @@
 #include <QPainter>
 #include <QLineEdit>
 #include <QDebug>
+#include <QMenu>
+#include <parameterdialog.h>
+
 class Shap: public QWidget
 {
     Q_OBJECT
-    bool selectedShape = false;
 
 
     QLineEdit* CMx = nullptr;
     QLineEdit* CMy = nullptr;
+    void changeScale();
+
+    void changeRotation();
+    void changeCM();
 protected:
+    bool selectedShape = false;
     Shap(const QPoint& center);
     Shap() = default;
     Shap(const QColor& color) {
@@ -36,47 +43,21 @@ protected:
 
 
 public:
+    virtual QMenu* createContextMenu(QWidget *parent);
+
     virtual void rotate(double angle) = 0;
     virtual void scale(double factor, const QPoint& center) = 0;
-    void updatePositionFromText() {
-        bool okX, okY;
-        int x = CMx->text().toInt(&okX);
-        int y = CMy->text().toInt(&okY);
-        if (okX && okY) {
-            position = QPoint(x, y);
-            update();
-        }
-    }
+    void updatePositionFromText();
 
-    void updatePosition(const QPoint& newPosition) {
-        position = newPosition;
-        update();
-    }
+    void setParameter(double param) {rotation = param;}
 
-    void showInformation(QPainter& painter, int height) {
+    void updatePosition(const QPoint& newPosition) {position = newPosition;     update();}
 
-        painter.setPen(Qt::red);
-        QRect rect(20, height - 43, 100, 20);
-        painter.drawText(rect, Qt::AlignLeft, QString("P: ") + QString::number(this->perimeter(), 'f', 2));
-
-        QRect rect2(20, height - 22, 100, 20);
-        painter.drawText(rect2, Qt::AlignLeft, QString("S: ") + QString::number(this->area(), 'f', 2));
-
-        QRect rect3(120, height - 22, 100, 20);
-        painter.drawText(rect3, Qt::AlignLeft, QString("Угол: ") + QString::number(-this->rotation, 'f', 2));
-        qDebug() << "Rotate: " << this->rotation;
-    }
+    void showInformation(QPainter& painter, int height);
     //virtual void showMoreInformation() override = 0;
 
     virtual void move(const QPoint& offset) = 0;
-    void changeSelection() {
-        selectedShape = !selectedShape;
-        if (selectedShape) {
-            color = Qt::green;
-        } else {
-            color = originalColor;
-        }
-    }
+    void changeSelection();
 
     QColor getColor() const{
         return color;
@@ -98,14 +79,7 @@ public:
     virtual bool contains(const QPoint &point) const = 0;
 
     virtual void draw(QPainter& painter) = 0;
-    void drawShape(QPainter& painter){
-        painter.save();
-        painter.translate(position); // Перемещаем начало координат в центр фигуры
-        painter.rotate(rotation);
-        painter.translate(-position);
-        this->draw(painter);
-        painter.restore();
-    }
+    void drawShape(QPainter& painter);
 
 };
 

@@ -7,9 +7,13 @@ class Ellipse: public Shap
     int R1, R2;
 
     bool contains(const QPoint &point) const override;
+    void changeRadius();
+    void change();
 public:
     void draw(QPainter& painter) override;
     Ellipse(QPoint& start, QPoint& end, QColor& color);
+    QMenu* createContextMenu(QWidget *parent) override;
+
 protected:
     double area() const override;
     double perimeter() const override;

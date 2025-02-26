@@ -2,8 +2,9 @@
 #define CANVAS_H
 #include <QWidget>
 #include <QComboBox>
-#include "shap.h"
 #include <QGestureEvent>
+class Shap;
+
 class Canvas: public QWidget
 {
 protected:
@@ -13,10 +14,14 @@ protected:
     void paintEvent(QPaintEvent *event) override;
 public:
     Canvas(QWidget *parent = nullptr);
-
+    static bool isPointInWindow(const QWidget *widget, const QPoint &point) {
+        QRect windowRect = widget->rect();
+        return !windowRect.contains(point);
+    }
     void setColor(const QColor &newColor);
     void clear();
 private:
+    //void openParameterDialog(Shap* shape);
     bool isRotating = false;
     bool drawing;
     QPoint startPoint;

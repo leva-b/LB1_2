@@ -42,3 +42,24 @@ bool Circle::contains(const QPoint &point) const {
 
     return path.contains(point);
 }
+
+
+QMenu* Circle::createContextMenu(QWidget *parent){
+    QMenu* menu = Shap::createContextMenu(parent);
+    menu->addAction("Изменение R", this, &Circle::change);
+    return menu;
+}
+
+void Circle::change(){
+    QStringList labels = {"R:"};
+    QList<double> initialValues = {(double)radius};
+
+    ParameterDialog dialog(labels, initialValues);
+    if (dialog.exec() == QDialog::Accepted) {
+        QList<double> newValues = dialog.values();
+        if(abs(newValues[0]) > abs(10*radius)) radius *= 10;
+        else if(abs(newValues[0]) < abs(0.1*radius)) radius *= 0.1;
+        else radius = newValues[0];
+
+    }
+}

@@ -15,6 +15,7 @@ SOURCES += \
     hexagon.cpp \
     main.cpp \
     mainwindow.cpp \
+    parameterdialog.cpp \
     polygon.cpp \
     rectangle.cpp \
     rhomb.cpp \
@@ -29,6 +30,7 @@ HEADERS += \
     ellipse.h \
     hexagon.h \
     mainwindow.h \
+    parameterdialog.h \
     polygon.h \
     rectangle.h \
     rhomb.h \

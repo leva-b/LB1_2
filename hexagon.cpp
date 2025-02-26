@@ -14,7 +14,25 @@ QVector<QPoint> Hexagon::calculateVertices(const QPoint& start, const QPoint& en
 
     QPoint center(start);
 
-    double radius = QLineF(start, end).length();
+    radius = QLineF(start, end).length();
+
+    for (int i = 0; i < 6; ++i) {
+        double angle = 2 * M_PI * i / 6; // угол для вершины
+        int x = center.x() + radius * cos(angle);
+        int y = center.y() + radius * sin(angle);
+        vertices.push_back(QPoint(x, y));
+    }
+
+    return vertices;
+}
+
+
+QVector<QPoint> Hexagon::calculateVertices(int R)
+{
+    QVector<QPoint> vertices;
+
+    QPoint center(position);
+    radius = R;
 
     for (int i = 0; i < 6; ++i) {
         double angle = 2 * M_PI * i / 6; // угол для вершины
@@ -48,4 +66,26 @@ void Hexagon::scale(double factor, const QPoint& center){
     if(scaleFactor * factor > 10)scaleFactor = 10;
     else if(scaleFactor * factor < 0.1)scaleFactor = 0.1;
     else scaleFactor *= factor;
+}
+
+
+
+QMenu* Hexagon::createContextMenu(QWidget *parent){
+    QMenu* menu = Shap::createContextMenu(parent);
+    menu->addAction("Изменение R", this, &Hexagon::change);
+    return menu;
+}
+
+void Hexagon::change(){
+    QStringList labels = {"R:"};
+    QList<double> initialValues = {(double)radius};
+
+    ParameterDialog dialog(labels, initialValues);
+    if (dialog.exec() == QDialog::Accepted) {
+        QList<double> newValues = dialog.values();
+        if(abs(newValues[0]) > abs(10*radius)) radius *= 10;
+        else if(abs(newValues[0]) < abs(0.1*radius)) radius *= 0.1;
+        else radius = newValues[0];
+        vertices = calculateVertices(radius);
+    }
 }
