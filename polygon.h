@@ -13,7 +13,7 @@ protected:
     QVector<QPoint> vertices;
     void move(const QPoint& offset) override;
     double perimeter() const override;
-    void rotate(double angle, const QPoint& center) override;
+    void rotate(double angle) override;
     void scale(double factor, const QPoint& center) override;
     void draw(QPainter& painter) override = 0;
     double TriangleArea(const QPoint& p1, const QPoint& p2,const QPoint& p3)const;

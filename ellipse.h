@@ -14,7 +14,7 @@ protected:
     double area() const override;
     double perimeter() const override;
     void move(const QPoint& offset) override;
-    void rotate(double angle, const QPoint& pivot) override;
+    void rotate(double angle) override {Q_UNUSED(angle)};
     void scale(double factor, const QPoint& center) override;
 };
 

@@ -31,7 +31,7 @@ void Ellipse::move(const QPoint& offset) {
     startPoint = startPoint + offset;
     position = position + offset;
 }
-void Ellipse::rotate(double angle, const QPoint& pivot){Q_UNUSED(pivot); Q_UNUSED(angle)}
+
 void Ellipse::scale(double factor, const QPoint& center){
     if(scaleFactor * factor > 10)scaleFactor = 10;
     else if(scaleFactor * factor < 0.1)scaleFactor = 0.1;

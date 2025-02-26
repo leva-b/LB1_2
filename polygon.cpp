@@ -25,19 +25,11 @@ void Polygon::move(const QPoint& offset) {
     position += offset;
 }
 
-void Polygon::rotate(double angle, const QPoint& center) {
-    double rad = angle * M_PI / 180;
-    double cosA = std::cos(rad);
-    double sinA = std::sin(rad);
-
-    for (QPoint& vertex : vertices) {
-        QPoint relative = vertex - center;
-        vertex.setX(center.x() + relative.x() * cosA - relative.y() * sinA);
-        vertex.setY(center.y() + relative.x() * sinA + relative.y() * cosA);
-    }
+void Polygon::rotate(double angle) {
+    rotation += angle;
 }
 
-void Polygon::scale(double factor, const QPoint& center) {\
+void Polygon::scale(double factor, const QPoint& center) {
     if(scaleFactor * factor > 10)scaleFactor = 10;
     else if(scaleFactor * factor < 0.1)scaleFactor = 0.1;
     else scaleFactor *= factor;

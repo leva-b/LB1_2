@@ -55,7 +55,10 @@ QVector<QPoint> Stars::calculateVertices(const QPoint& start)
 }
 
 void Stars::draw(QPainter& painter){
-    QPolygon polygon(vertices);
+    QPolygon polygon;
+    for(const QPoint& vertice: vertices){
+        polygon << (vertice - position)*scaleFactor + position;
+    }
     painter.setPen(QPen(color,3));
     painter.drawPolygon(polygon);
 }
@@ -66,12 +69,12 @@ double Stars::area()const{
         result += TriangleArea(vertices[i-1<0?vertices.size() - 1:i-1], vertices[i], vertices[i+1]);
         result += TriangleArea(vertices[i-1<0?vertices.size() - 1:i-1], position, vertices[i+1]);
     }
-    return result;
+    return result*scaleFactor;
 }
 
 void Stars::scale(double factor, const QPoint& center){
     if(scaleFactor * factor > 10)scaleFactor = 10;
     else if(scaleFactor * factor < 0.1)scaleFactor = 0.1;
     else scaleFactor *= factor;
-    vertices = calculateVertices(center);
+    // vertices = calculateVertices(center);
 }

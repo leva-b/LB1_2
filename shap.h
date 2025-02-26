@@ -33,9 +33,9 @@ protected:
     virtual double area() const = 0;
     virtual double perimeter() const = 0;
 
-    virtual void rotate(double angle, const QPoint& pivot) = 0;
 
 public:
+    virtual void rotate(double angle) = 0;
     virtual void scale(double factor, const QPoint& center) = 0;
     void updatePositionFromText() {
         bool okX, okY;

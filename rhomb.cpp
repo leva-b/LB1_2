@@ -7,12 +7,17 @@ Rhomb::Rhomb(const QPoint& start, const QPoint& end, const QColor& color):
 
 void Rhomb::draw(QPainter& painter)
 {
+    painter.save(); // Сохраняем текущее состояние painter
+    painter.translate(center()); // Перемещаем начало координат в центр фигуры
+    painter.rotate(rotation); // Применяем поворот
+    painter.translate(-center());
     painter.setPen(QPen(color, 3));
     painter.setBrush(Qt::NoBrush);
     QPolygon polygon;
     for(int i = 0; i < 4; i++)
         polygon << (vertices[i]- position)*scaleFactor + position;
     painter.drawPolygon(polygon);
+    painter.restore();
 }
 
 
