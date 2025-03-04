@@ -145,7 +145,7 @@ void Canvas::mousePressEvent(QMouseEvent *event) {
             if (shape->contains(event->pos())) {
                 QMenu *contextMenu = shape->createContextMenu(this);
                 contextMenu->exec(event->globalPos());
-                delete contextMenu; // Удаляем меню после использования
+                delete contextMenu;
                 return;
             }
         }
@@ -249,20 +249,6 @@ void Canvas::paintEvent(QPaintEvent* event) {
         painter.drawEllipse(center, 4, 4);
 
         selectedShape->showInformation(painter, height());
-
-        //     // Показываем QLineEdit и обновляем их значения
-        //     CMx->setText(QString::number(center.x()));
-        //     CMy->setText(QString::number(center.y()));
-
-        //     CMx->setGeometry(120, height() - 50, 100, 20);
-        //     CMy->setGeometry(120, height() - 22, 100, 20);
-
-        //     CMx->show();
-        //     CMy->show();
-        // } else {
-        //     // Скрываем QLineEdit, если нет выбранной фигуры
-        //     CMx->hide();
-        //     CMy->hide();
     }
 
     // рисуем текущую фигуру(процесс рисования)
@@ -301,43 +287,4 @@ void Canvas::paintEvent(QPaintEvent* event) {
         }
     }
 }
-
-void Canvas::updateShapePositionFromText() {
-    if (selectedShape) {
-        bool okX, okY;
-        int x = CMx->text().toInt(&okX);
-        int y = CMy->text().toInt(&okY);
-
-        if (okX && okY) {
-            selectedShape->updatePosition(QPoint(x, y));
-            update();
-        }
-    }
-}
-
-// void Canvas::openParameterDialog(Shap* shape) {
-//     // Создаем диалог для ввода параметров
-//     QDialog dialog(this);
-//     dialog.setWindowTitle("Изменить параметры");
-
-//     QVBoxLayout layout(&dialog);
-//     QLineEdit *paramInput = new QLineEdit(&dialog);
-//     layout.addWidget(paramInput);
-
-//     QPushButton *okButton = new QPushButton("OK", &dialog);
-//     layout.addWidget(okButton);
-
-//     connect(okButton, &QPushButton::clicked, [&]() {
-//         // Обрабатываем ввод параметров
-//         bool ok;
-//         double newParam = paramInput->text().toDouble(&ok);
-//         if (ok) {
-//             shape->setParameter(newParam);
-//             dialog.accept();
-//             update();
-//         }
-//     });
-
-//     dialog.exec();
-// }
 

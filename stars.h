@@ -14,8 +14,8 @@ public:
 
 
 private:
-    int numRays;       // количество лучей
-    double innerR;     // внутренний радиус
+    int numRays;
+    double innerR;
     double outerR;
 
     QVector<QPoint> calculateVertices(const QPoint& start);

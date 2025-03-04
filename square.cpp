@@ -54,18 +54,3 @@ void Square::change(){
     }
 }
 
-
-// void Square::calculateVertices(const QPoint& start) {
-//     vertices.clear();
-//     //this->vertices.push_back(start);
-//     int sideLength = std::max(abs(position.x() - vertices[2].x()), abs(position.y() - vertices[2].y()));
-
-//     int centerX = start.x();
-//     int centerY = start.y();
-
-//     vertices.push_back(QPoint(centerX - sideLength, centerY - sideLength));
-//     vertices.push_back(QPoint(centerX + sideLength, centerY - sideLength));
-//     vertices.push_back(QPoint(centerX + sideLength, centerY + sideLength));
-//     vertices.push_back(QPoint(centerX - sideLength, centerY + sideLength));
-// }
-

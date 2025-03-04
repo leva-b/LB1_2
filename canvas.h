@@ -34,7 +34,7 @@ private:
     QLineEdit* CMx;
     QLineEdit* CMy;
 
-    void updateShapePositionFromText();
+    //void updateShapePositionFromText();
 private slots:
     void chooseColor();
 };

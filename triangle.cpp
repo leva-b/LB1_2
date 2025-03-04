@@ -2,6 +2,7 @@
 #include <QPainter>
 #include <QPolygon>
 #include <parameterdialog.h>
+
 Triangle::Triangle(const QPoint& point1, const QPoint& point2, const QPoint& point3, const QColor& color):
     Polygon({point1, point2, point3}, color){
     if(point1.y() < point2.y())

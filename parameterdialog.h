@@ -13,14 +13,14 @@ public:
     ParameterDialog(const QStringList &labels, const QList<double> &initialValues, QWidget *parent = nullptr);
     ParameterDialog(const QStringList &labels, const QList<QPoint> &initialVertices, QWidget *parent = nullptr);
     QList<double> values() const;
-    QComboBox *pointSelector; // Селектор для выбора номера точки
+    QComboBox *pointSelector;
 
 private slots:
-    void updateCoordinates(int index); // Слот для обновления координат
+    void updateCoordinates(int index);
 
 private:
     QList<QLineEdit*> inputs;
-    QList<QPoint> vertices; // Координаты вершин
+    QList<QPoint> vertices;
 };
 
 #endif // PARAMETERDIALOG_H
